@@ -24,6 +24,7 @@ public class Utils {
             data.clear();
             // Call stored procedure relative to interrogation index
             if(index == 0){
+                data.add("Groupe par titre :");
                 CallableStatement statement = connection.prepareCall("{CALL fromTitle(?)}");
                 statement.setString(1, txtTitre.getText());
                 ResultSet result = statement.executeQuery();
@@ -32,6 +33,7 @@ public class Utils {
                     data.add(result.getString("DENOMINATION"));
                 }
             }else if(index == 1){
+                data.add("Rencontre par titre et par groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromTitleAndGroup(?, ?)}");
                 statement.setString(1, txtTitre.getText());
                 statement.setString(2, txtGroupe.getText());
@@ -41,6 +43,7 @@ public class Utils {
                     data.add(result.getString("NOM_RENCONTRE"));
                 }
             }else if(index == 2){
+                data.add("Membre par spécialité et par rencontre : ");
                 CallableStatement statement = connection.prepareCall("{CALL membreFromSpecAndRencontre(?, ?)}");
                 statement.setString(1, spec);
                 statement.setString(2, txtRencontre.getText());
@@ -50,6 +53,7 @@ public class Utils {
                     data.add(result.getString("NOM") + " " + result.getString("PRENOM"));
                 }
             }else if(index == 3){
+                data.add("Titre par durée et par région ou pays : ");
                 CallableStatement statement = connection.prepareCall("{CALL titreFromDureeAndRegion(?, ?, ?)}");
                 statement.setInt(1, indexSigne);
                 statement.setInt(2, Integer.parseInt(txtDuree.getText()));
@@ -60,6 +64,7 @@ public class Utils {
                     data.add(result.getString("TITRE"));
                 }
             }else if(index == 4){
+                data.add("Rencontre par nombre de groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromNbGroupe(?)}");
                 statement.setInt(1, Integer.parseInt(txtNbGroupe.getText()));
                 ResultSet result = statement.executeQuery();
@@ -77,6 +82,7 @@ public class Utils {
                     data.add(result.getString("NOM_RENCONTRE"));
                 }
             }else if(index == 6){
+                data.add("Planning complet de la rencontre par lieu et groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL planningRencontreFromGroupeAndLieu(?, ?)}");
                 statement.setString(1, txtGroupe.getText());
                 statement.setString(2, txtLieuRencontre.getText());

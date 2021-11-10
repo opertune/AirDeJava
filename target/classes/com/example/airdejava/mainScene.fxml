@@ -31,6 +31,6 @@
       <ComboBox fx:id="cbbSigneDuree" disable="true" layoutX="263.0" layoutY="165.0" onAction="#onChangeCbbSigneDuree" prefHeight="25.0" prefWidth="63.0" />
       <TextField fx:id="txtLieuRencontre" disable="true" layoutX="341.0" layoutY="116.0" onKeyTyped="#keyTypedTxtLieuRencontre" />
       <Label layoutX="342.0" layoutY="97.0" text="Lieu rencontre :" textFill="WHITE" />
-      <ListView fx:id="lvResult" layoutX="14.0" layoutY="197.0" prefHeight="154.0" prefWidth="475.0" />
+      <ListView fx:id="lvResult" layoutX="14.0" layoutY="201.0" prefHeight="154.0" prefWidth="475.0" />
    </children>
 </Pane>
