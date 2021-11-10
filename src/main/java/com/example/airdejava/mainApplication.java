@@ -16,7 +16,7 @@ public class mainApplication extends Application {
         FXMLLoader mainScene = new FXMLLoader(mainApplication.class.getResource("mainScene.fxml"));
         Scene main = new Scene(mainScene.load());
         controller1 = mainScene.getController();
-
+        stage.setResizable(false);
         stage.setTitle("AirDeJava");
         stage.setScene(main);
         stage.show();

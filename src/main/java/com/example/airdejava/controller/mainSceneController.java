@@ -30,7 +30,7 @@ public class mainSceneController implements Initializable, Constant {
     @FXML
     private Label lblWelcome;
     @FXML
-    private TextField txtTitre, txtGroupe, txtDuree, txtNbGroupe, txtPaysRegion, txtRencontre, txtInstrument;
+    private TextField txtTitre, txtGroupe, txtDuree, txtNbGroupe, txtPaysRegion, txtRencontre, txtInstrument, txtLieuRencontre;
     @FXML
     private ComboBox<String> cbSpec;
     @FXML
@@ -78,6 +78,11 @@ public class mainSceneController implements Initializable, Constant {
     void keyTypedTxtInstrument(KeyEvent event) {
         utilsRequest();
     }
+    @FXML
+    void keyTypedTxtLieuRencontre(KeyEvent event) {
+        utilsRequest();
+    }
+
     @FXML
     void clickBtnLogin(ActionEvent event) throws IOException {
         // Open login scene
@@ -129,7 +134,7 @@ public class mainSceneController implements Initializable, Constant {
                 break;
             case 6 :
                 disableTextField();
-                txtPaysRegion.setDisable(false);
+                txtLieuRencontre.setDisable(false);
                 txtGroupe.setDisable(false);
                 break;
         }
@@ -172,6 +177,8 @@ public class mainSceneController implements Initializable, Constant {
         txtRencontre.clear();
         cbbSigneDuree.setDisable(true);
         cbbSigneDuree.getSelectionModel().select(1);
+        txtLieuRencontre.setDisable(true);
+        txtLieuRencontre.clear();
     }
     // Update welcome label
     public void updateLbl(String txt){
@@ -185,6 +192,6 @@ public class mainSceneController implements Initializable, Constant {
 
     // call utils request sql
     private void utilsRequest(){
-        Utils.callProcedure(index, data, connection, lvResult, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument);
+        Utils.callProcedure(index, data, connection, lvResult, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre);
     }
 }

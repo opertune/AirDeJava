@@ -3,6 +3,8 @@ package com.example.airdejava.utils;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import org.w3c.dom.Text;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,7 +19,7 @@ public class Utils {
     // call stored procedure
     public static void callProcedure(int index, ObservableList data, Connection connection, ListView lvResult,
                                      TextField txtTitre, TextField txtGroupe, TextField txtRencontre, String spec, int indexSigne,
-                                     TextField txtDuree, TextField txtRegionPays, TextField txtNbGroupe, TextField txtInstrument){
+                                     TextField txtDuree, TextField txtRegionPays, TextField txtNbGroupe, TextField txtInstrument, TextField txtLieuRencontre){
         try{
             // Clear observable list
             data.clear();
@@ -73,6 +75,17 @@ public class Utils {
                 while (result.next()){
                     // Add value in obersableList
                     data.add(result.getString("NOM_RENCONTRE"));
+                }
+            }else if(index == 6){
+                CallableStatement statement = connection.prepareCall("{CALL planningRencontreFromGroupeAndLieu(?, ?)}");
+                statement.setString(1, txtGroupe.getText());
+                statement.setString(2, txtLieuRencontre.getText());
+                ResultSet result = statement.executeQuery();
+                while (result.next()){
+                    // Add value in obersableList
+                    data.add(result.getString("NOM_RENCONTRE") + "  " + result.getString("LIEU") + " " + result.getString("DATE_DU_PROCHAIN_DEROULEMENT") +
+                            " " + result.getString("PERIODICITE_DE_LA_RENCONTRE") + " " + result.getString("NOM_GROUPE") + " " + result.getString("DATE_DE_PASSAGE") +
+                            " " + result.getString("HEURE_DU_DEBUT") + " " + result.getString("HEURE_DE_FIN"));
                 }
             }
 
