@@ -18,9 +18,9 @@ public class User {
         if(_role == 1){
             _roleName = "admin";
         }else if(_role == 2){
-            _roleName = "member";
+            _roleName = "membre";
         }else if(_role == 3 ){
-            _roleName = "guest";
+            _roleName = "invité";
         }
     }
 

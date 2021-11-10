@@ -56,18 +56,18 @@ public class LoginController implements Constant {
                     USER.set_roleName();
                     // Update login button and welcome label
                     mainApplication.getController().updateBtn(false);
-                    mainApplication.getController().updateLbl("Welcome "+USER.get_username()+" ! you are loged in with "+ USER.get_roleName() +" role");
+                    mainApplication.getController().updateLbl("Bienvenu "+ USER.get_username() +" ! vous êtes connecté en tant que "+ USER.get_roleName());
                     // Hide login scene
                     loginScene.getScene().getWindow().hide();
                     lblErrorLogin.setText("");
                 }else {
-                    lblErrorLogin.setText("Username and password doesn't match or account doesn't exist !!");
+                    lblErrorLogin.setText("Le pseudo et le mot de passe ne correspondent pas ou le compte n'existe pas.");
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
         }else{
-            lblErrorLogin.setText("Required username and password !!");
+            lblErrorLogin.setText("Requiert un pseudo et un mot de passe !");
         }
     }
 }

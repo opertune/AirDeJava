@@ -3,25 +3,28 @@ package com.example.airdejava.controller;
 import com.example.airdejava.mainApplication;
 import com.example.airdejava.utils.Constant;
 import com.example.airdejava.utils.Utils;
+import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.io.IOException;
 import java.net.URL;
-import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class mainSceneController implements Initializable, Constant {
-    private Connection connection;
     private ObservableList<String> data = FXCollections.observableArrayList();
     private int index;
 
@@ -62,7 +65,7 @@ public class mainSceneController implements Initializable, Constant {
     }
     @FXML
     void keyTypedTxtDuree(KeyEvent event) {
-        if (txtDuree.getText() == "") txtDuree.setText("0");
+        if (txtDuree.getText().equals("")) txtDuree.setText("0");
         utilsRequest();
     }
     @FXML
@@ -71,7 +74,7 @@ public class mainSceneController implements Initializable, Constant {
     }
     @FXML
     void keyTypedTxtNbGroupe(KeyEvent event) {
-        if (txtNbGroupe.getText() == "") txtNbGroupe.setText("0");
+        if (txtNbGroupe.getText().equals("")) txtNbGroupe.setText("0");
         utilsRequest();
     }
     @FXML
@@ -89,12 +92,20 @@ public class mainSceneController implements Initializable, Constant {
         Stage stage = new Stage();
         FXMLLoader loginScene = new FXMLLoader(mainApplication.class.getResource("loginScene.fxml"));
         Scene login = new Scene(loginScene.load());
-        stage.setTitle("Login");
+        stage.setTitle("Connection");
         stage.setScene(login);
         stage.show();
         if(stage.isShowing()){
             btnLogin.setDisable(true);
         }
+
+        // Enable login button when user close login stage
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                btnLogin.setDisable(false);
+            }
+        });
     }
 
     // Get selected instruction index
@@ -144,12 +155,9 @@ public class mainSceneController implements Initializable, Constant {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // init database connection
-        connection = Utils.databaseConnection();
         // Set welcome label
-        updateLbl("Welcome ! you are loged in with "+ USER.get_roleName() +" role");
+        updateLbl("Bienvenu ! vous êtes connecté en tant qu'"+ USER.get_roleName());
         // init comboBox
-        ObservableList<String> options = FXCollections.observableArrayList("soliste", "choriste", "musicien", "chanteur");
         cbSpec.setItems(FXCollections.observableArrayList("soliste", "choriste", "musicien", "chanteur"));
         cbbInterrogation.setItems(FXCollections.observableArrayList("Groupe par titre", "Rencontre par titre + groupe", "Membre par spécialité + rencontre",
                 "Titre par durée + pays/région", "Rencontre par nombre de groupe", "Rencontre par instrument", "Planning rencontre par lieu + groupe"));
@@ -191,7 +199,14 @@ public class mainSceneController implements Initializable, Constant {
     }
 
     // call utils request sql
-    private void utilsRequest(){
-        Utils.callProcedure(index, data, connection, lvResult, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre);
+    private void utilsRequest() {
+        // init database connection
+        Connection connection = Utils.databaseConnection();
+        Utils.callProcedure(connection, index, data, lvResult, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre);
+        // Close connection
+        try {
+            connection.close();
+            System.out.println("Connection close");
+        }catch (Exception e){e.printStackTrace();}
     }
 }

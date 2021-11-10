@@ -2,9 +2,11 @@ package com.example.airdejava;
 
 import com.example.airdejava.controller.mainSceneController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -20,6 +22,14 @@ public class mainApplication extends Application {
         stage.setTitle("AirDeJava");
         stage.setScene(main);
         stage.show();
+
+        // Close all stage when user exit program
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
     }
 
     public static void main(String[] args) {

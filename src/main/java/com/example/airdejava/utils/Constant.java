@@ -9,5 +9,5 @@ public interface Constant {
     String DBURL = "jdbc:mysql://localhost:3306/" + DBNAME;
 
     // User with the lowest privileges
-    User USER = new User("guest", 3);
+    User USER = new User("invité", 3);
 }
