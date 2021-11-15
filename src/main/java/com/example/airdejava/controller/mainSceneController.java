@@ -5,6 +5,8 @@ import com.example.airdejava.utils.Constant;
 import com.example.airdejava.utils.Utils;
 import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,8 +18,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,11 +41,13 @@ public class mainSceneController implements Initializable, Constant {
     @FXML
     private ComboBox<String> cbSpec;
     @FXML
-    private ListView<String> lvResult;
-    @FXML
     private ComboBox<String> cbbInterrogation;
     @FXML
     private ComboBox<String> cbbSigneDuree;
+    @FXML
+    private AnchorPane apScrollPane;
+    @FXML
+    private TableView<?> tvResult;
 
     @FXML
     void keyTypedTxtTitre(KeyEvent event) {
@@ -150,7 +156,6 @@ public class mainSceneController implements Initializable, Constant {
                 break;
         }
         data.clear();
-        lvResult.setItems(data);
     }
 
     @Override
@@ -202,11 +207,10 @@ public class mainSceneController implements Initializable, Constant {
     private void utilsRequest() {
         // init database connection
         Connection connection = Utils.databaseConnection();
-        Utils.callProcedure(connection, index, data, lvResult, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre);
+        Utils.callProcedure(apScrollPane,connection, index, data, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre, tvResult);
         // Close connection
         try {
             connection.close();
-            System.out.println("Connection close");
         }catch (Exception e){e.printStackTrace();}
     }
 }

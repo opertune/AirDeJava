@@ -1,9 +1,17 @@
 package com.example.airdejava.utils;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,87 +24,131 @@ public class Utils {
     }
 
     // call stored procedure
-    public static void callProcedure(Connection connection, int index, ObservableList data, ListView lvResult,
+    public static void callProcedure(AnchorPane ap, Connection connection, int index, ObservableList data,
                                      TextField txtTitre, TextField txtGroupe, TextField txtRencontre, String spec, int indexSigne,
-                                     TextField txtDuree, TextField txtRegionPays, TextField txtNbGroupe, TextField txtInstrument, TextField txtLieuRencontre){
+                                     TextField txtDuree, TextField txtRegionPays, TextField txtNbGroupe, TextField txtInstrument, TextField txtLieuRencontre, TableView tvResult){
         try{
             // Clear observable list
             data.clear();
+
+            ResultSet result = null;
+
             // Call stored procedure relative to interrogation index
             if(index == 0){
-                data.add("Groupe par titre :");
                 CallableStatement statement = connection.prepareCall("{CALL fromTitle(?)}");
                 statement.setString(1, txtTitre.getText());
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("DENOMINATION"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }else if(index == 1){
-                data.add("Rencontre par titre et par groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromTitleAndGroup(?, ?)}");
                 statement.setString(1, txtTitre.getText());
                 statement.setString(2, txtGroupe.getText());
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("NOM_RENCONTRE"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }else if(index == 2){
-                data.add("Membre par spécialité et par rencontre : ");
                 CallableStatement statement = connection.prepareCall("{CALL membreFromSpecAndRencontre(?, ?)}");
                 statement.setString(1, spec);
                 statement.setString(2, txtRencontre.getText());
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("NOM") + " " + result.getString("PRENOM"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }else if(index == 3){
-                data.add("Titre par durée et par région ou pays : ");
                 CallableStatement statement = connection.prepareCall("{CALL titreFromDureeAndRegion(?, ?, ?)}");
                 statement.setInt(1, indexSigne);
                 statement.setInt(2, Integer.parseInt(txtDuree.getText()));
                 statement.setString(3, txtRegionPays.getText());
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("TITRE"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }else if(index == 4){
-                data.add("Rencontre par nombre de groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromNbGroupe(?)}");
                 statement.setInt(1, Integer.parseInt(txtNbGroupe.getText()));
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("LIEU_DE_LA_PRESENTATION"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }else if(index == 5){
-                data.add("Rencontre par instrument :");
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromInstrument(?)}");
                 statement.setString(1, txtInstrument.getText());
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("NOM_RENCONTRE"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }else if(index == 6){
-                data.add("Planning complet de la rencontre par lieu et groupe : ");
+                //data.add("Planning complet de la rencontre par lieu et groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL planningRencontreFromGroupeAndLieu(?, ?)}");
                 statement.setString(1, txtGroupe.getText());
                 statement.setString(2, txtLieuRencontre.getText());
-                ResultSet result = statement.executeQuery();
+                result = statement.executeQuery();
                 while (result.next()){
                     // Add value in observableList
-                    data.add(result.getString("NOM_RENCONTRE") + " | " + result.getString("LIEU") + " | " + result.getString("DATE_DU_PROCHAIN_DEROULEMENT") +
-                            " | " + result.getString("PERIODICITE_DE_LA_RENCONTRE") + " | " + result.getString("NOM_GROUPE") + " | " + result.getString("DATE_DE_PASSAGE") +
-                            " | " + result.getString("HEURE_DU_DEBUT") + " | " + result.getString("HEURE_DE_FIN"));
+                    ObservableList<String> row = FXCollections.observableArrayList();
+                    for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
+                        row.add(result.getString(i));
+                    }
+                    data.add(row);
                 }
             }
 
-            // Add observable list in listView
-            lvResult.setItems(data);
+            // If querry get result : init tableview with column
+            if (!data.isEmpty()){
+                int width = 0;
+                // Add column in tableview
+                for(int i = 1; i <= result.getMetaData().getColumnCount(); i++){
+                    final int j = i;
+                    TableColumn col = new TableColumn(result.getMetaData().getColumnLabel(i));
+                    col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){
+                        public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                            return new SimpleStringProperty(param.getValue().get(j-1).toString());
+                        }
+                    });
+                    col.setStyle("-fx-alignment: CENTER;");
+                    tvResult.getColumns().addAll(col);
+                    width += col.getPrefWidth() + (col.getText().length()*6);
+                }
+
+                tvResult.setPrefWidth(width);
+                ap.setPrefWidth(width);
+            }
+
+            // Add observable list in tableview
+            tvResult.setItems(data);
         }catch (Exception e){
             e.printStackTrace();
         }
