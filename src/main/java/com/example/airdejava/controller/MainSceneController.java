@@ -3,10 +3,6 @@ package com.example.airdejava.controller;
 import com.example.airdejava.mainApplication;
 import com.example.airdejava.utils.Constant;
 import com.example.airdejava.utils.Utils;
-import javafx.beans.property.ReadOnlyListWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,24 +12,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Callback;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 
-public class mainSceneController implements Initializable, Constant {
+public class MainSceneController implements Initializable, Constant {
     private ObservableList<String> data = FXCollections.observableArrayList();
     private int index;
 
     @FXML
     private Button btnLogin;
+    @FXML
+    private Button btnAdminPanel;
     @FXML
     private Label lblWelcome;
     @FXML
@@ -92,28 +87,6 @@ public class mainSceneController implements Initializable, Constant {
         utilsRequest();
     }
 
-    @FXML
-    void clickBtnLogin(ActionEvent event) throws IOException {
-        // Open login scene
-        Stage stage = new Stage();
-        FXMLLoader loginScene = new FXMLLoader(mainApplication.class.getResource("loginScene.fxml"));
-        Scene login = new Scene(loginScene.load());
-        stage.setTitle("Connection");
-        stage.setScene(login);
-        stage.show();
-        if(stage.isShowing()){
-            btnLogin.setDisable(true);
-        }
-
-        // Enable login button when user close login stage
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                btnLogin.setDisable(false);
-            }
-        });
-    }
-
     // Get selected instruction index
     @FXML
     void cbbInterrogationEvent(ActionEvent event) {
@@ -156,10 +129,13 @@ public class mainSceneController implements Initializable, Constant {
                 break;
         }
         data.clear();
+        tvResult.getColumns().clear();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Hide admin button
+        btnAdminPanel.setVisible(false);
         // Set welcome label
         updateLbl("Bienvenu ! vous êtes connecté en tant qu'"+ USER.get_roleName());
         // init comboBox
@@ -197,20 +173,68 @@ public class mainSceneController implements Initializable, Constant {
     public void updateLbl(String txt){
         this.lblWelcome.setText(txt);
     }
-
     // Update login button
     public void updateBtn(boolean bool){
         this.btnLogin.setDisable(bool);
     }
+    // Update admin panel button
+    public void updateAdminBtn(boolean bool) { this.btnAdminPanel.setVisible(bool);}
 
-    // call utils request sql
+    // Call utils request sql
     private void utilsRequest() {
-        // init database connection
+        // Init database connection
         Connection connection = Utils.databaseConnection();
-        Utils.callProcedure(apScrollPane,connection, index, data, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(), cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre, tvResult);
+        Utils.callProcedure(apScrollPane,connection, index, data, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(),
+                cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre, tvResult);
         // Close connection
         try {
             connection.close();
         }catch (Exception e){e.printStackTrace();}
+    }
+
+    // Open login panel
+    @FXML
+    void clickBtnLogin(ActionEvent event) throws IOException {
+        // Open login scene
+        Stage stage = new Stage();
+        FXMLLoader loginScene = new FXMLLoader(mainApplication.class.getResource("loginScene.fxml"));
+        Scene login = new Scene(loginScene.load());
+        stage.setTitle("Connection");
+        stage.setScene(login);
+        stage.show();
+        if(stage.isShowing()){
+            btnLogin.setDisable(true);
+        }
+
+        // Enable login button when user close login stage
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                btnLogin.setDisable(false);
+            }
+        });
+    }
+
+    // Open admin panel
+    @FXML
+    void clickBtnAdminPanel(ActionEvent event) throws IOException {
+        // Open adminPanel scene
+        Stage stage = new Stage();
+        FXMLLoader adminPanel = new FXMLLoader(mainApplication.class.getResource("adminPanel.fxml"));
+        Scene admin = new Scene(adminPanel.load());
+        stage.setTitle("Admin Panel");
+        stage.setScene(admin);
+        stage.show();
+        if(stage.isShowing()){
+            btnAdminPanel.setDisable(true);
+        }
+
+        // Enable admin panel button when user close admin panel stage
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                btnAdminPanel.setDisable(false);
+            }
+        });
     }
 }

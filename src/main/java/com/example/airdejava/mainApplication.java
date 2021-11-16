@@ -1,6 +1,6 @@
 package com.example.airdejava;
 
-import com.example.airdejava.controller.mainSceneController;
+import com.example.airdejava.controller.MainSceneController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 
 public class mainApplication extends Application {
-    private static mainSceneController controller1;
+    private static MainSceneController controller1;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,7 +36,7 @@ public class mainApplication extends Application {
         launch();
     }
 
-    public static mainSceneController getController(){
+    public static MainSceneController getController(){
         return controller1;
     }
 }

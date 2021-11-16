@@ -57,6 +57,11 @@ public class LoginController implements Constant {
                     // Update login button and welcome label
                     mainApplication.getController().updateBtn(false);
                     mainApplication.getController().updateLbl("Bienvenu "+ USER.get_username() +" ! vous êtes connecté en tant que "+ USER.get_roleName());
+                    if (USER.get_role() == 1) {
+                        mainApplication.getController().updateAdminBtn(true);
+                    } else {
+                        mainApplication.getController().updateAdminBtn(false);
+                    }
                     // Hide login scene
                     loginScene.getScene().getWindow().hide();
                     lblErrorLogin.setText("");

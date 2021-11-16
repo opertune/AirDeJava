@@ -9,31 +9,31 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="503.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.airdejava.controller.mainSceneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="503.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.airdejava.controller.MainSceneController">
    <children>
       <Button fx:id="btnLogin" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBtnLogin" text="Connection" />
-      <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="99.0" layoutY="8.0" prefHeight="41.0" prefWidth="234.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
-      <TextField fx:id="txtTitre" disable="true" layoutX="14.0" layoutY="64.0" onKeyTyped="#keyTypedTxtTitre" />
-      <Label layoutX="15.0" layoutY="47.0" text="Titre :" textFill="WHITE" />
-      <TextField fx:id="txtGroupe" disable="true" layoutX="177.0" layoutY="64.0" onKeyTyped="#keyTypedTxtGroupe" />
-      <Label layoutX="178.0" layoutY="47.0" text="Groupe :" textFill="WHITE" />
-      <Label layoutX="15.0" layoutY="148.0" text="Spécialité :" textFill="WHITE" />
-      <Label layoutX="178.0" layoutY="97.0" text="Pays / Région :" textFill="WHITE" />
-      <TextField fx:id="txtDuree" disable="true" layoutX="178.0" layoutY="165.0" onKeyTyped="#keyTypedTxtDuree" prefHeight="25.0" prefWidth="84.0" />
-      <Label layoutX="179.0" layoutY="148.0" text="Durée (secondes) :" textFill="WHITE" />
-      <Label layoutX="342.0" layoutY="148.0" text="Nombre de groupe :" textFill="WHITE" />
-      <TextField fx:id="txtNbGroupe" disable="true" layoutX="341.0" layoutY="165.0" onKeyTyped="#keyTypedTxtNbGroupe" />
-      <Label layoutX="342.0" layoutY="47.0" text="Instrument :" textFill="WHITE" />
-      <ComboBox fx:id="cbSpec" disable="true" layoutX="13.0" layoutY="165.0" onAction="#onChangeCbbSpec" prefWidth="150.0" />
-      <Label layoutX="15.0" layoutY="97.0" text="Rencontre :" textFill="WHITE" />
+      <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="49.0" prefHeight="25.0" prefWidth="475.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+      <TextField fx:id="txtTitre" disable="true" layoutX="14.0" layoutY="91.0" onKeyTyped="#keyTypedTxtTitre" />
+      <Label layoutX="15.0" layoutY="74.0" text="Titre :" textFill="WHITE" />
+      <TextField fx:id="txtGroupe" disable="true" layoutX="177.0" layoutY="91.0" onKeyTyped="#keyTypedTxtGroupe" />
+      <Label layoutX="178.0" layoutY="74.0" text="Groupe :" textFill="WHITE" />
+      <Label layoutX="15.0" layoutY="175.0" text="Spécialité :" textFill="WHITE" />
+      <Label layoutX="178.0" layoutY="124.0" text="Pays / Région :" textFill="WHITE" />
+      <TextField fx:id="txtDuree" disable="true" layoutX="178.0" layoutY="192.0" onKeyTyped="#keyTypedTxtDuree" prefHeight="25.0" prefWidth="84.0" />
+      <Label layoutX="179.0" layoutY="175.0" text="Durée (secondes) :" textFill="WHITE" />
+      <Label layoutX="342.0" layoutY="175.0" text="Nombre de groupe :" textFill="WHITE" />
+      <TextField fx:id="txtNbGroupe" disable="true" layoutX="341.0" layoutY="192.0" onKeyTyped="#keyTypedTxtNbGroupe" />
+      <Label layoutX="342.0" layoutY="74.0" text="Instrument :" textFill="WHITE" />
+      <ComboBox fx:id="cbSpec" disable="true" layoutX="13.0" layoutY="192.0" onAction="#onChangeCbbSpec" prefWidth="150.0" />
+      <Label layoutX="15.0" layoutY="124.0" text="Rencontre :" textFill="WHITE" />
       <ComboBox fx:id="cbbInterrogation" layoutX="340.0" layoutY="14.0" onAction="#cbbInterrogationEvent" prefWidth="150.0" />
-      <TextField fx:id="txtPaysRegion" disable="true" layoutX="177.0" layoutY="116.0" onKeyTyped="#keyTypedTxtPaysRegion" />
-      <TextField fx:id="txtRencontre" disable="true" layoutX="14.0" layoutY="116.0" onKeyTyped="#keyTypedTxtRencontre" />
-      <TextField fx:id="txtInstrument" disable="true" layoutX="341.0" layoutY="64.0" onKeyTyped="#keyTypedTxtInstrument" />
-      <ComboBox fx:id="cbbSigneDuree" disable="true" layoutX="263.0" layoutY="165.0" onAction="#onChangeCbbSigneDuree" prefHeight="25.0" prefWidth="63.0" />
-      <TextField fx:id="txtLieuRencontre" disable="true" layoutX="341.0" layoutY="116.0" onKeyTyped="#keyTypedTxtLieuRencontre" />
-      <Label layoutX="342.0" layoutY="97.0" text="Lieu rencontre :" textFill="WHITE" />
-      <ScrollPane layoutX="14.0" layoutY="200.0" prefHeight="250.0" prefWidth="475.0">
+      <TextField fx:id="txtPaysRegion" disable="true" layoutX="177.0" layoutY="143.0" onKeyTyped="#keyTypedTxtPaysRegion" />
+      <TextField fx:id="txtRencontre" disable="true" layoutX="14.0" layoutY="143.0" onKeyTyped="#keyTypedTxtRencontre" />
+      <TextField fx:id="txtInstrument" disable="true" layoutX="341.0" layoutY="91.0" onKeyTyped="#keyTypedTxtInstrument" />
+      <ComboBox fx:id="cbbSigneDuree" disable="true" layoutX="263.0" layoutY="192.0" onAction="#onChangeCbbSigneDuree" prefHeight="25.0" prefWidth="63.0" />
+      <TextField fx:id="txtLieuRencontre" disable="true" layoutX="341.0" layoutY="143.0" onKeyTyped="#keyTypedTxtLieuRencontre" />
+      <Label layoutX="342.0" layoutY="124.0" text="Lieu rencontre :" textFill="WHITE" />
+      <ScrollPane layoutX="14.0" layoutY="231.0" prefHeight="250.0" prefWidth="475.0">
         <content>
           <AnchorPane fx:id="apScrollPane" minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="885.0">
                <children>
@@ -46,5 +46,6 @@
             </AnchorPane>
         </content>
       </ScrollPane>
+      <Button fx:id="btnAdminPanel" layoutX="103.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBtnAdminPanel" prefHeight="25.0" prefWidth="98.0" text="Admin panel" />
    </children>
 </Pane>
