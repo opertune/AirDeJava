@@ -19,7 +19,7 @@ public class Utils {
     }
 
     // call stored procedure
-    public static void callProcedure(AnchorPane ap, Connection connection, int index, ObservableList data,
+    public static void callProcedure(AnchorPane anchorPane, Connection connection, int index, ObservableList data,
                                      TextField txtTitre, TextField txtGroupe, TextField txtRencontre, String spec, int indexSigne,
                                      TextField txtDuree, TextField txtRegionPays, TextField txtNbGroupe, TextField txtInstrument, TextField txtLieuRencontre, TableView tvResult){
         try{
@@ -60,15 +60,14 @@ public class Utils {
                 statement.setString(1, txtInstrument.getText());
                 result = statement.executeQuery();
             }else if(index == 6){
-                //data.add("Planning complet de la rencontre par lieu et groupe : ");
                 CallableStatement statement = connection.prepareCall("{CALL planningRencontreFromGroupeAndLieu(?, ?)}");
                 statement.setString(1, txtGroupe.getText());
                 statement.setString(2, txtLieuRencontre.getText());
                 result = statement.executeQuery();
             }
 
+            // Add result in observableList
             while (result.next()){
-                // Add value in observableList
                 ObservableList<String> row = FXCollections.observableArrayList();
                 for(int i=1 ; i<=result.getMetaData().getColumnCount(); i++){
                     row.add(result.getString(i));
@@ -95,7 +94,7 @@ public class Utils {
                 }
                 // Increase tableview and scrollpane width
                 tvResult.setPrefWidth(width);
-                ap.setPrefWidth(width);
+                anchorPane.setPrefWidth(width);
             }
 
             // Add observable list in tableview

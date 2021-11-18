@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="760.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.airdejava.controller.AdminPanelController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="760.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.airdejava.controller.AdminPanelController">
    <children>
       <Label layoutX="10.0" layoutY="10.0" text="Ajouter une personne" textFill="WHITE" />
       <Label layoutX="10.0" layoutY="72.0" text="Ajouter un groupe" textFill="WHITE" />
@@ -16,7 +16,6 @@
       <Label layoutX="10.0" layoutY="192.0" text="Ajouter une oeuvre" textFill="WHITE" />
       <Label layoutX="10.0" layoutY="486.0" text="Ajouter une oeuvre au répertoire d'un groupe" textFill="WHITE" />
       <Label layoutX="10.0" layoutY="314.0" text="Ajouter une personne à un groupe" textFill="WHITE" />
-      <Label layoutX="10.0" layoutY="547.0" text="Ajouter un groupe a une rencontre" textFill="WHITE" />
       <TextField fx:id="txtNomPersonne" layoutX="10.0" layoutY="28.0" prefHeight="25.0" prefWidth="100.0" promptText="Nom" />
       <TextField fx:id="txtPrenomPersonne" layoutX="115.0" layoutY="28.0" maxWidth="100.0" prefWidth="100.0" promptText="Prenom" />
       <TextField fx:id="txtCivilitePersonne" layoutX="220.0" layoutY="28.0" maxWidth="50.0" prefWidth="50.0" promptText="Civilité" />
@@ -43,34 +42,31 @@
       <ComboBox fx:id="cbbAddEstMembrePersonne" layoutX="10.0" layoutY="332.0" prefWidth="150.0" promptText="Personne" />
       <ComboBox fx:id="cbbAddEstMembreGroupe" layoutX="165.0" layoutY="332.0" prefWidth="150.0" promptText="Groupe" />
       <ComboBox fx:id="cbbAddEstMembreSpecialite" layoutX="320.0" layoutY="332.0" prefWidth="150.0" promptText="Specialité" />
-      <TextField layoutX="475.0" layoutY="332.0" prefWidth="100.0" promptText="Instrument" />
-      <TextField layoutX="580.0" layoutY="332.0" prefWidth="100.0" promptText="Responsabilité" />
+      <TextField fx:id="txtEstMembreInstrument" layoutX="475.0" layoutY="332.0" prefWidth="100.0" promptText="Instrument" />
+      <TextField fx:id="txtEstMembreResponsabilite" layoutX="580.0" layoutY="332.0" prefWidth="100.0" promptText="Responsabilité" />
       <ComboBox fx:id="cbbRepertoireOeuvre" layoutX="10.0" layoutY="504.0" prefWidth="150.0" promptText="Oeuvre" />
       <ComboBox fx:id="cbbRepertoireGroupe" layoutX="165.0" layoutY="504.0" prefWidth="150.0" promptText="Groupe" />
-      <Button layoutX="685.0" layoutY="332.0" mnemonicParsing="false" text="Ajouter" />
-      <Button layoutX="320.0" layoutY="504.0" mnemonicParsing="false" text="Ajouter" />
-      <ComboBox fx:id="cbbParticipeGroupe" layoutX="10.0" layoutY="565.0" prefWidth="150.0" promptText="Groupe" />
-      <ComboBox fx:id="cbbParticipeRencontre" layoutX="165.0" layoutY="565.0" prefWidth="150.0" promptText="Rencontre" />
-      <Button layoutX="320.0" layoutY="565.0" mnemonicParsing="false" text="Ajouter" />
+      <Button layoutX="685.0" layoutY="332.0" mnemonicParsing="false" onAction="#btnClickAddEstMembre" text="Ajouter" />
+      <Button layoutX="320.0" layoutY="504.0" mnemonicParsing="false" onAction="#btnClickOeuvreInRepertoire" text="Ajouter" />
       <Label layoutX="10.0" layoutY="252.0" text="Ajouter un programme" textFill="WHITE" />
       <ComboBox fx:id="cbbAddProgrammeGroupe" layoutX="10.0" layoutY="270.0" prefWidth="150.0" promptText="Groupe" />
       <DatePicker fx:id="dbAddProgrammeDate" layoutX="165.0" layoutY="270.0" prefHeight="25.0" prefWidth="150.0" promptText="Date passage" />
       <Label layoutX="325.0" layoutY="255.0" text="Heure début" textFill="WHITE" />
-      <TextField fx:id="dbAddProgrammeHHDebut" layoutX="320.0" layoutY="270.0" prefHeight="25.0" prefWidth="35.0" promptText="HH" />
+      <TextField fx:id="txtAddProgrammeHHDebut" layoutX="320.0" layoutY="270.0" prefHeight="25.0" prefWidth="35.0" promptText="HH" />
       <Label layoutX="357.0" layoutY="263.0" text=":" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="dbAddProgrammeMMDebut" layoutX="365.0" layoutY="270.0" prefHeight="25.0" prefWidth="35.0" promptText="MM" />
+      <TextField fx:id="txtAddProgrammeMMDebut" layoutX="365.0" layoutY="270.0" prefHeight="25.0" prefWidth="35.0" promptText="MM" />
       <Label layoutX="422.0" layoutY="255.0" text="Heure fin" textFill="WHITE" />
-      <TextField fx:id="dbAddProgrammeHHFin" layoutX="406.0" layoutY="270.0" prefWidth="35.0" promptText="HH" />
+      <TextField fx:id="txtAddProgrammeHHFin" layoutX="406.0" layoutY="270.0" prefWidth="35.0" promptText="HH" />
       <Label layoutX="444.0" layoutY="263.0" text=":" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="dbAddProgrammeMMFin" layoutX="452.0" layoutY="270.0" prefWidth="35.0" promptText="MM" />
+      <TextField fx:id="txtAddProgrammeMMFin" layoutX="452.0" layoutY="270.0" prefWidth="35.0" promptText="MM" />
       <ComboBox fx:id="cbbAddProgrammeRencontre" layoutX="492.0" layoutY="270.0" prefWidth="150.0" promptText="Rencontre" />
       <Button layoutX="647.0" layoutY="270.0" mnemonicParsing="false" onAction="#btnClickAddProgramme" text="Ajouter" />
       <Label layoutX="10.0" layoutY="372.0" text="Ajouter un organisateur à une rencontre" textFill="WHITE" />
@@ -79,15 +75,15 @@
       <Label layoutX="10.0" layoutY="429.0" text="Ajouter un correspondant à un groupe" textFill="WHITE" />
       <ComboBox fx:id="cbbEstCorrespondantPersonne" layoutX="10.0" layoutY="446.0" prefWidth="150.0" promptText="Personne" />
       <ComboBox fx:id="cbbEstCorrespondantGroupe" layoutX="165.0" layoutY="446.0" prefWidth="150.0" promptText="Groupe" />
-      <Button layoutX="320.0" layoutY="390.0" mnemonicParsing="false" text="Ajouter" />
-      <Button layoutX="320.0" layoutY="446.0" mnemonicParsing="false" text="Ajouter" />
+      <Button layoutX="320.0" layoutY="390.0" mnemonicParsing="false" onAction="#btnClickEstOrganisateur" text="Ajouter" />
+      <Button layoutX="320.0" layoutY="446.0" mnemonicParsing="false" onAction="#btnClickEstCorrespondant" text="Ajouter" />
       <Label layoutX="406.0" layoutY="372.0" text="Ajouter un pays" textFill="WHITE" />
       <Label layoutX="406.0" layoutY="429.0" text="Ajouter une région" textFill="WHITE" />
-      <TextField layoutX="406.0" layoutY="390.0" prefWidth="100.0" promptText="Pays" />
-      <TextField layoutX="406.0" layoutY="446.0" prefWidth="100.0" promptText="Région" />
+      <TextField fx:id="txtAddPays" layoutX="406.0" layoutY="390.0" prefWidth="100.0" promptText="Pays" />
+      <TextField fx:id="txtAddRegion" layoutX="406.0" layoutY="446.0" prefWidth="100.0" promptText="Région" />
       <ComboBox fx:id="ccbAddRegionPays" layoutX="511.0" layoutY="446.0" prefWidth="150.0" promptText="Pays" />
-      <Button layoutX="511.0" layoutY="390.0" mnemonicParsing="false" text="Ajouter" />
-      <Button layoutX="666.0" layoutY="446.0" mnemonicParsing="false" text="Ajouter" />
+      <Button layoutX="511.0" layoutY="390.0" mnemonicParsing="false" onAction="#clickAddPays" text="Ajouter" />
+      <Button layoutX="666.0" layoutY="446.0" mnemonicParsing="false" onAction="#clickAddRegion" text="Ajouter" />
       <ComboBox fx:id="cbbAddGroupeRegion" layoutX="115.0" layoutY="90.0" prefWidth="150.0" promptText="Région représenté" />
    </children>
 </Pane>

@@ -46,7 +46,6 @@ public class LoginController implements Constant {
 
                 // Close connection
                 statement.close();
-                System.out.println("Connection close");
 
                 if(outUsername != "null" && outRole != 0){
                     // Set user name and role

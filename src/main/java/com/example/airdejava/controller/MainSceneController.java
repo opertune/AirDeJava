@@ -18,7 +18,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class MainSceneController implements Initializable, Constant {
@@ -201,6 +203,7 @@ public class MainSceneController implements Initializable, Constant {
         Scene login = new Scene(loginScene.load());
         stage.setTitle("Connection");
         stage.setScene(login);
+        stage.setResizable(false);
         stage.show();
         if(stage.isShowing()){
             btnLogin.setDisable(true);
@@ -224,6 +227,7 @@ public class MainSceneController implements Initializable, Constant {
         Scene admin = new Scene(adminPanel.load());
         stage.setTitle("Admin Panel");
         stage.setScene(admin);
+        stage.setResizable(false);
         stage.show();
         if(stage.isShowing()){
             btnAdminPanel.setDisable(true);
