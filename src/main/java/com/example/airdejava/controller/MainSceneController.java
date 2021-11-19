@@ -13,7 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
@@ -21,6 +23,8 @@ import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainSceneController implements Initializable, Constant {
@@ -240,5 +244,59 @@ public class MainSceneController implements Initializable, Constant {
                 btnAdminPanel.setDisable(false);
             }
         });
+    }
+
+    // TEXTFIELD AUTO COMPLETE
+    // create vbox, pos vbox, create label avec le resultat qui contient les char, insert label
+    @FXML
+    private VBox vBoxAutoComplete;
+    @FXML
+    private TextField txtAutoComplete;
+    @FXML
+    private Label lblAutoComplete;
+
+    @FXML
+    void txtAutoCompleteInput(KeyEvent event) throws SQLException {
+        Connection connection = Utils.databaseConnection();
+        CallableStatement statement = connection.prepareCall("{CALL selectTitleAutoComplete(?)}");
+        statement.setString(1, "%"+txtAutoComplete.getText()+"%");
+        ResultSet resultSet = statement.executeQuery();
+        autoComplete(resultSet);
+        connection.close();
+        if(txtAutoComplete.getText().equals("")){
+            vBoxAutoComplete.getChildren().clear();
+            vBoxAutoComplete.setVisible(false);
+        }else{
+            vBoxAutoComplete.setVisible(true);
+        }
+    }
+    private void autoComplete(ResultSet resultSet) throws SQLException {
+        vBoxAutoComplete.getChildren().clear();
+        while (resultSet.next()){
+            for(int i=1 ; i<=resultSet.getMetaData().getColumnCount(); i++){
+                Label lbl = new Label();
+                lbl.setText(resultSet.getString(i));
+                lbl.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        lblAutoComplete.setText("");
+                        lblAutoComplete.setText(lbl.getText());
+                    }
+                });
+                lbl.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        lbl.setStyle("-fx-background-color: #2596be;");
+                    }
+                });
+                lbl.setOnMouseExited(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        lbl.setStyle("-fx-background-color: white;");
+                    }
+                });
+                vBoxAutoComplete.getChildren().add(lbl);
+            }
+        }
     }
 }
