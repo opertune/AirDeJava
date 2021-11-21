@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="672.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.airdejava.controller.MainSceneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="495.0" prefWidth="502.0" style="-fx-background-color: #272727;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.airdejava.controller.MainSceneController">
    <children>
       <Button fx:id="btnLogin" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBtnLogin" text="Connection" />
       <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="49.0" prefHeight="25.0" prefWidth="475.0" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
@@ -21,10 +22,8 @@
       <Label layoutX="178.0" layoutY="74.0" text="Groupe :" textFill="WHITE" />
       <Label layoutX="15.0" layoutY="175.0" text="Spécialité :" textFill="WHITE" />
       <Label layoutX="178.0" layoutY="124.0" text="Pays / Région :" textFill="WHITE" />
-      <TextField fx:id="txtDuree" disable="true" layoutX="178.0" layoutY="192.0" onKeyTyped="#keyTypedTxtDuree" prefHeight="25.0" prefWidth="84.0" />
-      <Label layoutX="179.0" layoutY="175.0" text="Durée (secondes) :" textFill="WHITE" />
+      <Label layoutX="179.0" layoutY="175.0" text="Durée (Minutes/Secondes) :" textFill="WHITE" />
       <Label layoutX="342.0" layoutY="175.0" text="Nombre de groupe :" textFill="WHITE" />
-      <TextField fx:id="txtNbGroupe" disable="true" layoutX="341.0" layoutY="192.0" onKeyTyped="#keyTypedTxtNbGroupe" />
       <Label layoutX="342.0" layoutY="74.0" text="Instrument :" textFill="WHITE" />
       <ComboBox fx:id="cbSpec" disable="true" layoutX="13.0" layoutY="192.0" onAction="#onChangeCbbSpec" prefWidth="150.0" />
       <Label layoutX="15.0" layoutY="124.0" text="Rencontre :" textFill="WHITE" />
@@ -49,12 +48,14 @@
         </content>
       </ScrollPane>
       <Button fx:id="btnAdminPanel" layoutX="103.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBtnAdminPanel" prefHeight="25.0" prefWidth="98.0" text="Admin panel" />
-      <VBox fx:id="vBoxAutoComplete" layoutX="508.0" layoutY="49.0" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: white;" />
-      <TextField fx:id="txtAutoComplete" layoutX="509.0" layoutY="14.0" onKeyTyped="#txtAutoCompleteInput" />
-      <Label fx:id="lblAutoComplete" layoutX="488.0" layoutY="218.0" prefHeight="27.0" prefWidth="183.0" textFill="WHITE">
+      <Spinner fx:id="spNbGroupe" disable="true" layoutX="341.0" layoutY="192.0" />
+      <TextField fx:id="txtDureeMin" disable="true" layoutX="179.0" layoutY="192.0" onKeyTyped="#keyTypedTxtDureeMin" prefHeight="25.0" prefWidth="35.0" promptText="min" />
+      <TextField fx:id="txtDureeSec" disable="true" layoutX="223.0" layoutY="192.0" onKeyTyped="#keyTypedTxtDureeSec" prefHeight="25.0" prefWidth="35.0" promptText="sec" />
+      <Label layoutX="216.0" layoutY="186.0" text=":" textFill="WHITE">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font>
       </Label>
+      <VBox fx:id="vBoxAutoComplete" prefHeight="17.0" prefWidth="150.0" style="-fx-background-color: white;" visible="false" />
    </children>
 </Pane>

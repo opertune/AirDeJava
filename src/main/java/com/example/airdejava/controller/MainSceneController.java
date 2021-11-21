@@ -3,6 +3,8 @@ package com.example.airdejava.controller;
 import com.example.airdejava.mainApplication;
 import com.example.airdejava.utils.Constant;
 import com.example.airdejava.utils.Utils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,12 +14,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
@@ -38,7 +43,9 @@ public class MainSceneController implements Initializable, Constant {
     @FXML
     private Label lblWelcome;
     @FXML
-    private TextField txtTitre, txtGroupe, txtDuree, txtNbGroupe, txtPaysRegion, txtRencontre, txtInstrument, txtLieuRencontre;
+    private TextField txtTitre, txtGroupe, txtPaysRegion, txtRencontre, txtInstrument, txtLieuRencontre, txtDureeMin, txtDureeSec;
+    @FXML
+    private Spinner<Integer> spNbGroupe;
     @FXML
     private ComboBox<String> cbSpec;
     @FXML
@@ -49,18 +56,23 @@ public class MainSceneController implements Initializable, Constant {
     private AnchorPane apScrollPane;
     @FXML
     private TableView<?> tvResult;
+    @FXML
+    private VBox vBoxAutoComplete;
 
     @FXML
     void keyTypedTxtTitre(KeyEvent event) {
         utilsRequest();
+        inputTextAutoCompleteRequest(txtTitre, "{CALL selectTitleAutoComplete(?)}");
     }
     @FXML
     void keyTypedTxtGroupe(KeyEvent event) {
         utilsRequest();
+        inputTextAutoCompleteRequest(txtGroupe, "{CALL selectGroupeAutoComplete(?)}");
     }
     @FXML
     void keyTypedTxtRencontre(KeyEvent event) {
         utilsRequest();
+        inputTextAutoCompleteRequest(txtRencontre, "{CALL selectNomRencontreAutoComplete(?)}");
     }
     @FXML
     void onChangeCbbSpec(ActionEvent event) {
@@ -70,27 +82,33 @@ public class MainSceneController implements Initializable, Constant {
     void onChangeCbbSigneDuree(ActionEvent event) {
         utilsRequest();
     }
+
     @FXML
-    void keyTypedTxtDuree(KeyEvent event) {
-        if (txtDuree.getText().equals("")) txtDuree.setText("0");
+    void keyTypedTxtDureeMin(KeyEvent event) {
+        if(txtDureeMin.getText().equals("")) txtDureeMin.setText("00");
         utilsRequest();
     }
+
+    @FXML
+    void keyTypedTxtDureeSec(KeyEvent event) {
+        if(txtDureeSec.getText().equals("")) txtDureeSec.setText("00");
+        utilsRequest();
+    }
+
     @FXML
     void keyTypedTxtPaysRegion(KeyEvent event) {
         utilsRequest();
-    }
-    @FXML
-    void keyTypedTxtNbGroupe(KeyEvent event) {
-        if (txtNbGroupe.getText().equals("")) txtNbGroupe.setText("0");
-        utilsRequest();
+        inputTextAutoCompleteRequest(txtPaysRegion, "{CALL selectPaysRegionAutoComplete(?)}");
     }
     @FXML
     void keyTypedTxtInstrument(KeyEvent event) {
         utilsRequest();
+        inputTextAutoCompleteRequest(txtInstrument, "{CALL selectInstrumentAutoComplete(?)}");
     }
     @FXML
     void keyTypedTxtLieuRencontre(KeyEvent event) {
         utilsRequest();
+        inputTextAutoCompleteRequest(txtLieuRencontre, "{CALL selectLieuRencontreAutoComplete(?)}");
     }
 
     // Get selected instruction index
@@ -114,15 +132,17 @@ public class MainSceneController implements Initializable, Constant {
                 break;
             case 3 :
                 disableTextField();
-                txtDuree.setDisable(false);
-                txtDuree.setText("0");
+                txtDureeMin.setDisable(false);
+                txtDureeMin.setText("00");
+                txtDureeSec.setDisable(false);
+                txtDureeSec.setText("00");
                 txtPaysRegion.setDisable(false);
                 cbbSigneDuree.setDisable(false);
                 break;
             case 4 :
                 disableTextField();
-                txtNbGroupe.setDisable(false);
-                txtNbGroupe.setText("0");
+                spNbGroupe.setDisable(false);
+                spNbGroupe.getValueFactory().setValue(0);
                 break;
             case 5 :
                 disableTextField();
@@ -150,6 +170,13 @@ public class MainSceneController implements Initializable, Constant {
                 "Titre par durée + pays/région", "Rencontre par nombre de groupe", "Rencontre par instrument", "Planning rencontre par lieu + groupe"));
         cbbSigneDuree.setItems(FXCollections.observableArrayList("==", ">=", "<="));
         cbbSigneDuree.getSelectionModel().select(1);
+        // Event listener on spinner
+        spNbGroupe.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                utilsRequest();
+            }
+        });
     }
 
     // Disable and clear all textfield
@@ -160,14 +187,16 @@ public class MainSceneController implements Initializable, Constant {
         txtGroupe.clear();
         txtTitre.setDisable(true);
         txtTitre.clear();
-        txtDuree.setDisable(true);
-        txtDuree.clear();
+        txtDureeMin.setDisable(true);
+        txtDureeSec.setDisable(true);
+        txtDureeMin.clear();
+        txtDureeSec.clear();
         txtInstrument.setDisable(true);
         txtInstrument.clear();
         txtPaysRegion.setDisable(true);
         txtPaysRegion.clear();
-        txtNbGroupe.setDisable(true);
-        txtNbGroupe.clear();
+        spNbGroupe.setDisable(true);
+        spNbGroupe.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0));
         txtRencontre.setDisable(true);
         txtRencontre.clear();
         cbbSigneDuree.setDisable(true);
@@ -190,8 +219,8 @@ public class MainSceneController implements Initializable, Constant {
     private void utilsRequest() {
         // Init database connection
         Connection connection = Utils.databaseConnection();
-        Utils.callProcedure(apScrollPane,connection, index, data, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(),
-                cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDuree, txtPaysRegion, txtNbGroupe, txtInstrument, txtLieuRencontre, tvResult);
+        Utils.callProcedure(apScrollPane, connection, index, data, txtTitre, txtGroupe, txtRencontre, cbSpec.getValue(),
+                cbbSigneDuree.getSelectionModel().getSelectedIndex(), txtDureeMin, txtDureeSec, txtPaysRegion, spNbGroupe, txtInstrument, txtLieuRencontre, tvResult);
         // Close connection
         try {
             connection.close();
@@ -247,54 +276,70 @@ public class MainSceneController implements Initializable, Constant {
     }
 
     // TEXTFIELD AUTO COMPLETE
-    // create vbox, pos vbox, create label avec le resultat qui contient les char, insert label
-    @FXML
-    private VBox vBoxAutoComplete;
-    @FXML
-    private TextField txtAutoComplete;
-    @FXML
-    private Label lblAutoComplete;
-
-    @FXML
-    void txtAutoCompleteInput(KeyEvent event) throws SQLException {
-        Connection connection = Utils.databaseConnection();
-        CallableStatement statement = connection.prepareCall("{CALL selectTitleAutoComplete(?)}");
-        statement.setString(1, "%"+txtAutoComplete.getText()+"%");
-        ResultSet resultSet = statement.executeQuery();
-        autoComplete(resultSet);
-        connection.close();
-        if(txtAutoComplete.getText().equals("")){
-            vBoxAutoComplete.getChildren().clear();
-            vBoxAutoComplete.setVisible(false);
-        }else{
-            vBoxAutoComplete.setVisible(true);
+    // Call stored procedure for auto complete
+    private void inputTextAutoCompleteRequest(TextField textfield, String request){
+        try {
+            Connection connection = Utils.databaseConnection();
+            CallableStatement statement = connection.prepareCall(request);
+            // statement parameter : % text % -> find any values that have text in any position
+            statement.setString(1, "%"+textfield.getText()+"%");
+            ResultSet resultSet = statement.executeQuery();
+            autoComplete(resultSet, textfield);
+            connection.close();
+            // Show / Hide vbox
+            if(textfield.getText().equals("")){
+                vBoxAutoComplete.getChildren().clear();
+                vBoxAutoComplete.setVisible(false);
+            }else{
+                vBoxAutoComplete.setVisible(true);
+                vBoxAutoComplete.setLayoutX(textfield.getLayoutX());
+                vBoxAutoComplete.setLayoutY(textfield.getLayoutY()+25);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
-    private void autoComplete(ResultSet resultSet) throws SQLException {
+
+    // Create label with result
+    private void autoComplete(ResultSet resultSet, TextField textfield) throws SQLException {
+        // Delete all label in vbox
         vBoxAutoComplete.getChildren().clear();
+        // For each result in resultset -> Create label in vbox
         while (resultSet.next()){
             for(int i=1 ; i<=resultSet.getMetaData().getColumnCount(); i++){
+                // init label for each result
                 Label lbl = new Label();
+                lbl.setPrefWidth(vBoxAutoComplete.getPrefWidth());
                 lbl.setText(resultSet.getString(i));
+
+                // Set textfield text with selected label
                 lbl.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        lblAutoComplete.setText("");
-                        lblAutoComplete.setText(lbl.getText());
+                        textfield.setText("");
+                        textfield.setText(lbl.getText());
+                        utilsRequest();
+                        vBoxAutoComplete.setVisible(false);
                     }
                 });
+
+                // Set label background color when user enter in field
                 lbl.setOnMouseEntered(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         lbl.setStyle("-fx-background-color: #2596be;");
                     }
                 });
+
+                // reset label background color when user enter in field
                 lbl.setOnMouseExited(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         lbl.setStyle("-fx-background-color: white;");
                     }
                 });
+
+                // Add label with result in vbox
                 vBoxAutoComplete.getChildren().add(lbl);
             }
         }

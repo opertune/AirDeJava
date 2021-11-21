@@ -11,6 +11,7 @@ import javafx.util.Callback;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Time;
 
 public class Utils {
     // Create database connection
@@ -22,7 +23,7 @@ public class Utils {
     // call stored procedure
     public static void callProcedure(AnchorPane anchorPane, Connection connection, int index, ObservableList data,
                                      TextField txtTitre, TextField txtGroupe, TextField txtRencontre, String spec, int indexSigne,
-                                     TextField txtDuree, TextField txtRegionPays, TextField txtNbGroupe, TextField txtInstrument, TextField txtLieuRencontre, TableView tvResult){
+                                     TextField txtDureeMin,TextField txtDureeSec, TextField txtRegionPays, Spinner<Integer> spNbGroupe, TextField txtInstrument, TextField txtLieuRencontre, TableView tvResult){
         try{
             // Clear observable list
             data.clear();
@@ -49,12 +50,12 @@ public class Utils {
             }else if(index == 3){
                 CallableStatement statement = connection.prepareCall("{CALL titreFromDureeAndRegion(?, ?, ?)}");
                 statement.setInt(1, indexSigne);
-                statement.setInt(2, Integer.parseInt(txtDuree.getText()));
+                statement.setTime(2, Time.valueOf("00:"+txtDureeMin.getText()+":"+txtDureeSec.getText()));
                 statement.setString(3, txtRegionPays.getText());
                 result = statement.executeQuery();
             }else if(index == 4){
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromNbGroupe(?)}");
-                statement.setInt(1, Integer.parseInt(txtNbGroupe.getText()));
+                statement.setInt(1, spNbGroupe.getValue());
                 result = statement.executeQuery();
             }else if(index == 5){
                 CallableStatement statement = connection.prepareCall("{CALL rencontreFromInstrument(?)}");
